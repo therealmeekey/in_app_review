@@ -192,19 +192,18 @@ public class InAppReviewPlugin implements FlutterPlugin, MethodCallHandler, Acti
         flow.addOnCompleteListener(task -> result.success(null));
     }
 
-    @SuppressWarnings("deprecation")
     private boolean isPlayStoreInstalled() {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 context.getPackageManager().getPackageInfo("com.android.vending", PackageManager.PackageInfoFlags.of(0));
             } else {
-                context.getPackageManager().getPackageInfo("com.android.vending", 0);
+                @SuppressWarnings("deprecation")
+                android.content.pm.PackageInfo info = context.getPackageManager().getPackageInfo("com.android.vending", 0);
             }
         } catch (PackageManager.NameNotFoundException e) {
             Log.i(TAG, "Play Store not installed.");
             return false;
         }
-
         return true;
     }
 
